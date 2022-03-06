@@ -8,7 +8,12 @@
 </head>
 <body>
 <div class="container">
-    <h1>Products</h1>
+    <div class="d-flex justify-content-around mt-5">
+        <h1>${requestScope["listName"]}</h1>
+        <a href="/products?action=search">
+            <button class="btn btn-outline-success" >Search</button>
+        </a>
+    </div>
     <table class="table">
         <thead>
         <tr>
@@ -33,10 +38,14 @@
         </c:forEach>
 
         <tr>
-            <td colspan="6"><a href="/products?action=add">Add new Product</a></td>
+            <td colspan="6">
+                <a href="/products?action=add" <c:if test = '${requestScope["hideAddNewProduct"]}'>style="visibility:hidden"</c:if> >Add new Product</a>
+                <a href="/products" <c:if test = '${requestScope["hideBackToList"]}'>style="visibility:hidden"</c:if>>Back to list</a>
+            </td>
         </tr>
         </tbody>
     </table>
+
 </div>
 </body>
 </html>

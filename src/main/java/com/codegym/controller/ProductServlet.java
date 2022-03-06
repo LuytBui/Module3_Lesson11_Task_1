@@ -31,6 +31,9 @@ public class ProductServlet extends HttpServlet {
             case "view":
                 viewProduct(request, response);
                 break;
+            case "search":
+                showSearchProduct(request, response);
+                break;
             default:
                 showAllProduct(request, response);
                 break;
@@ -56,9 +59,31 @@ public class ProductServlet extends HttpServlet {
             case "view":
                 // doGet only //
                 break;
+            case "search":
+                searchProduct(request, response);
+                break;
             default:
                 break;
         }
+    }
+
+    private void searchProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String key = request.getParameter("key");
+        List<Product> searchResult = productService.search(key);
+
+        request.setAttribute("products", searchResult);
+        request.setAttribute("listName", "Search result for keyword \""+ key + "\":");
+        request.setAttribute("hideAddNewProduct", true);
+        request.setAttribute("hideBackToList", false);
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("product-jsp/show-list.jsp");
+        requestDispatcher.forward(request, response);
+
+    }
+
+    private void showSearchProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/product-jsp/search-product.jsp");
+        requestDispatcher.forward(request, response);
     }
 
     private void viewProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -133,6 +158,10 @@ public class ProductServlet extends HttpServlet {
     private void showAllProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         List<Product> products = this.productService.getList();
         request.setAttribute("products", products);
+        request.setAttribute("listName", "All products");
+        request.setAttribute("hideAddNewProduct", false);
+        request.setAttribute("hideBackToList", true);
+
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("product-jsp/show-list.jsp");
         requestDispatcher.forward(request, response);
     }

@@ -3,7 +3,9 @@ package com.codegym.service;
 import com.codegym.model.com.codegym.Product;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ProductService implements IGeneralService<Product>{
     static private List<Product> list = new ArrayList<>();
@@ -48,5 +50,27 @@ public class ProductService implements IGeneralService<Product>{
             return false;
         list.set(index, newElement);
         return true;
+    }
+
+    public List<Product> search(String key){
+        key = key.toLowerCase();
+        int parseIntKey;
+        try {
+            parseIntKey = Integer.parseInt(key);
+        }
+        catch (NumberFormatException e) {
+            parseIntKey = Integer.MIN_VALUE;
+        }
+        List<Product> searchResult = new ArrayList<>();
+        for (Product product : list){
+            if (product.getId() == parseIntKey) {
+                searchResult.add(product);
+                continue;
+            }
+            if (product.getName().toLowerCase().contains(key)){
+                searchResult.add(product);
+            }
+        }
+        return searchResult;
     }
 }
