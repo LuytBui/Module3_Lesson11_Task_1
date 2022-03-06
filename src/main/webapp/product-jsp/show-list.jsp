@@ -24,7 +24,7 @@
         <c:forEach items='${requestScope["products"]}' var="product">
             <tr>
                 <td><a href="/products?action=view&id=${product.getId()}">${product.getId()}</a></td>
-                <td>${product.getName()}</td>
+                <td><a href="/products?action=view&id=${product.getId()}">${product.getName()}</a></td>
                 <td>${product.getPrice()}</td>
                 <td>${product.getDescription()}</td>
                 <td><a href="/products?action=edit&id=${product.getId()}">Edit</a></td>

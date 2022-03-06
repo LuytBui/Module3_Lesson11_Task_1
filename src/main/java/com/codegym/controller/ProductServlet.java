@@ -28,6 +28,9 @@ public class ProductServlet extends HttpServlet {
             case "delete":
                 showDeleteProduct(request, response);
                 break;
+            case "view":
+                viewProduct(request, response);
+                break;
             default:
                 showAllProduct(request, response);
                 break;
@@ -50,9 +53,20 @@ public class ProductServlet extends HttpServlet {
             case "delete":
                 deleteProduct(request, response);
                 break;
+            case "view":
+                // doGet only //
+                break;
             default:
                 break;
         }
+    }
+
+    private void viewProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Product product = productService.findByID(Integer.parseInt(request.getParameter("id")));
+        request.setAttribute("product", product);
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/product-jsp/view-product.jsp");
+        requestDispatcher.forward(request, response);
     }
 
     private void deleteProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
